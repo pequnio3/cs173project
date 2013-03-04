@@ -4,7 +4,7 @@
 import vista_data_reader
 import kmers
 import array
-
+import pickle
 
 # given a kmer determines what position in the array it is
 def kmerToPos(min_k,seq):
@@ -70,9 +70,18 @@ def doesExpressionOccur(trial, body_part):
             
 
 
-vista_file= "../data/vista_db.txt"
-vd = vista_data_reader.extract_vista_data(vista_file)
-extractFeatures(vd,"human","neural tube","neural_tube.txt")
+vd = pickle.load( open("../data/vista_data.p","rb"))
+# species we care aboue
+species=["human","mouse"]
+
+# body parts we care about
+# TODO: put the actual ones we care about in here
+body_parts=["limb","neural tube"]
+# extract features
+for s in species:
+    for b in body_parts:
+        out = "../data/paper_data"+s+"_"+b.replace(" ","_")+".txt"
+        extractFeatures(vd,"human","neural tube","../data/human_neural_tube.txt")
 
             
     

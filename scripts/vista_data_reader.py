@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import re
-
+import pickle
 # generates a list of dictionary objects
 
 # objects look like this
@@ -79,3 +79,7 @@ def getBodyParts(vd,species):
 
 
 
+vista_file= "../data/vista_db.txt"
+vd = extract_vista_data(vista_file)
+
+pickle.dump(vd,open("../data/vista_data.p","wb"))
