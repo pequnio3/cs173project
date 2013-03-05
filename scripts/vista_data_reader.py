@@ -45,10 +45,10 @@ def extract_vista_data(vista_filename):
                 cur_trial["expression"] = expression
                 results={}
                 if expression:
-                    for m2 in re.finditer("((\w+\s*)+)\\[(\d+)/(\d+)\\]", m.group(8)):
+                    for m2 in re.finditer("\s*([^\\|]+?)\\[(\d+)/(\d+)\\]", m.group(8)):
                         result={}
-                        result["successes"]=int(m2.group(3))
-                        result["total"]=int(m2.group(4))
+                        result["successes"]=int(m2.group(2))
+                        result["total"]=int(m2.group(3))
                         results[m2.group(1)]=result;
                 cur_trial["results"]=results
 
