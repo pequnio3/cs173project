@@ -1,0 +1,1 @@
+ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM530nnn/GSM530651/suppl/GSM530651_UW.Fetal_Brain.ChromatinAccessibility.H-22510.DS11872.wig.gz

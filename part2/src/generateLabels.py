@@ -1,0 +1,49 @@
+#!/usr/bin/python    
+import sys
+import cPickle
+
+def classifyTrial(trial, body_part):
+    isPos   = trial["expression"]
+    results = trial["results"]
+    brain=["midbrain (mesencephalon)","hindbrain (rhombencephalon)","forebrain","cranial nerve","nerual tube"]
+    limb=["limb"]
+    heart=["heart"]
+
+
+    body_parts =[]
+    if body_part == "brain":
+        body_parts = brain
+    elif body_part == "limb":
+        body_parts=limb
+    elif body_part=="heart":
+        body_parts=heart
+    elif body_part == "any":
+        body_parts=["any"]
+    
+    is_expression=False
+    for bp in body_parts:
+        if isPos and bp == "any":    #a unified way to deal when we do Not care about where expression occurred.
+            is_expression=True
+            break
+        elif isPos and bp in results:  #when taking into account body_part, positive is iff body part has expressed.
+            is_expression = True
+            break
+    return "1" if is_expression else "0"
+
+
+
+def generateLabels(vd,labels,body_part):
+    labels_f = open(labels,'w')
+    for trial in vd:
+        label = classifyTrial(trial,body_part)+"\n"
+        labels_f.write(label)
+
+if __name__ == '__main__':
+    if len(sys.argv) < 4:
+        print "usage: generateLabels <vista_data_pickle> <labels outfile> <body part>"
+    else:
+        vd_p = sys.argv[1]
+        labels = sys.argv[2]
+        body_part = sys.argv[3]
+        vd = cPickle.load( open(vd_p,"r") )
+        generateLabels(vd,labels,body_part)
