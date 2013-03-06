@@ -1,0 +1,126 @@
+#!/usr/bin/python
+
+import kmers
+
+# Given a kMer determine the dimension it corresponds to the feature vector.
+def kmerToPos(min_k, seq):
+    n = len(seq)
+    loc = 0
+    for i in xrange(min_k, n):
+        loc += pow(4,i)
+    for i in xrange(0,n):
+        place = (n-1)-i
+        if seq[place] == 'A':
+            loc += pow(4,i) * 0
+        elif seq[place] == 'T':
+            loc += pow(4,i) * 1
+        elif seq[place] == 'G':
+            loc += pow(4,i) * 2
+        else:
+            loc += pow(4,i) * 3
+    return loc
+
+# writes to outfile a series of feature vectors prepared for libsvm
+# based on the species and bodypart
+# the index of a feature can be linked to a specific kmer
+# the label is 1 if expression is positive 
+
+def extractFeatures(vd, species, body_part, outfile, directions = "onlyStrictNegatives", verbose = True):
+    if verbose:
+        totalPositive = totalNegative = 0
+        print  species + " - " + body_part
+        
+    f = open(outfile, "w")    
+    start_kmer=6
+    end_kmer=6
+
+    # size of feature vector
+    m = 0
+    for k in range(start_kmer,end_kmer+1):
+        m += pow(4,k)
+
+    for trial in vd:
+        if trial['species'] != species: continue
+        
+        out = classifyTrial(trial, body_part, directions)
+        if out == "skip":
+            continue
+        
+        if verbose:
+            if out == "1":
+                totalPositive += 1
+            else: 
+                totalNegative += 1
+        
+        features = dict()
+        
+        for k in xrange(start_kmer,end_kmer+1):
+            sequence = trial["sequence"]
+            kcounts = kmers.computeKmerCounts(sequence,k)
+            for kmer in kcounts:
+                i = kmerToPos(start_kmer, kmer)
+                count = kcounts[kmer]
+                features[i] = count
+        
+        out = out + " "
+        for i in sorted(features.iterkeys()):
+                
+                out+=str(i+1)+":"+str(features[i])+" "    #Added +1 so that feature indices start from 1
+                            
+        out+="\n"        
+        f.write(out)                
+
+    f.close()
+
+    if verbose:
+            print "Positive: " + str(totalPositive) + " Negative: " + str(totalNegative) +"."
+
+
+
+# Positive = 1, Negative = 0, Garbage = "skip"
+def classifyTrial(trial, body_part, directions = "onlyStrictNegatives"):
+    isPos   = trial["expression"]
+    results = trial["results"]
+
+    if body_part == "any":    #a unified way to deal when we do Not care about where expression occurred.
+        if isPos: return "1" 
+        else: return "0"
+    
+    if isPos and body_part in results:  #when taking into account body_part, positive is iff body part has expressed.
+        return "1"
+    
+    #about the Negatives we will decide based on the 'directions'
+    if directions == "onlyStrictNegatives":
+        if not isPos:
+            return "0"
+        else:
+            return "skip"   #there was expression in some other bodyPart
+
+    else: #will classify as negative -anything- that hasn't expressed the particular bodyPart
+        return "0"
+
+
+
+if __name__ == '__main__':
+    import os, sys, cPickle, simpleStatistics
+
+    vd = cPickle.load( open("../data/vista_data.data","r") )
+    
+    species     = ["Human","Mouse"]
+    body_parts  = ["limb", "neural_tube", "cranial_nerve", "hindbrain", "midbrain", "forebrain", "heart", "any"]
+
+    # Extract features
+    for s in species:
+        for b in body_parts:
+                        
+            out = "../data/" + s + "_" + b + "_RN.txt"                    
+            extractFeatures(vd, s, b, out, directions="relaxed")
+            
+#           #TODO fix the sys.path.append("/opt/local/bin/")
+#           #Scale feature vectors values to be in [0, 1]            
+#            command = "/opt/local/bin/svm-scale -l 0 -u 1 " + out + " > " + out + "_scaled.txt"
+#            os.system(command)
+#            os.system("rm " + out)
+
+            os.system("python ./checkdata.py " + out)   #call checkdata to verify that format is right for libSVM
+            
