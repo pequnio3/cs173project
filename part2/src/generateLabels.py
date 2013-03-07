@@ -28,7 +28,10 @@ def classifyTrial(trial, body_part):
         elif isPos and bp in results:  #when taking into account body_part, positive is iff body part has expressed.
             is_expression = True
             break
-    return "1" if is_expression else "0"
+    if is_expression:
+        return "1"
+    else:
+        return "0"
 
 
 
@@ -40,10 +43,11 @@ def generateLabels(vd,labels,body_part):
 
 if __name__ == '__main__':
     if len(sys.argv) < 4:
-        print "usage: generateLabels <vista_data_pickle> <labels outfile> <body part>"
+        print "usage: generateLabels <vista_data_pickle> <body part> <labels outfile> "
     else:
         vd_p = sys.argv[1]
-        labels = sys.argv[2]
-        body_part = sys.argv[3]
+        body_part = sys.argv[2]
+        labels = sys.argv[3]
+
         vd = cPickle.load( open(vd_p,"r") )
         generateLabels(vd,labels,body_part)

@@ -6,9 +6,12 @@ import cPickle
 
 def generateBed(vd,bed):
     bed_f = open(bed,'w')
+    count=0
     for trial in vd:
-        bed_seq="chr"+trial["chr"]+"\t"+trial["chr_start"]+"\t"+trial["chr_end"]+"\n"
+
+        bed_seq="chr"+trial["chr"]+"\t"+trial["chr_start"]+"\t"+trial["chr_end"]+"\t"+str(count)+"\n"
         bed_f.write(bed_seq)
+        count +=1
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
