@@ -14,8 +14,6 @@ def computeReverseCompliment(s):
 def computeKmerCounts(s,k):
     kmer_counts ={}
     rc_s = computeReverseCompliment(s)
-    print rc_s
-    print s
     parts = [s]
     if rc_s != s:
         parts.append(rc_s)
