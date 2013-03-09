@@ -18,7 +18,6 @@ import cPickle
 # example
 # a = extract_vista_data("../data/vista_db.txt")
 
-## TODO -> remove the parenthesis used as part of keys values
 def vistaDataParser(vista_filename):
     f = open(vista_filename,'r')
     trials=[]

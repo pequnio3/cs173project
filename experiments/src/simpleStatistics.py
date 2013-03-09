@@ -8,7 +8,7 @@ for non-commercial purposes.
 
 '''
 
-def countSizeOfClasses(species, vistaData, verbose=True ):
+def countSizeOfClasses(species, vistaData, verbose=True):
     total = positiveClass = negativeClass = 0
     for trial in vistaData:        
         if trial['species'] == species:    
@@ -23,7 +23,7 @@ def countSizeOfClasses(species, vistaData, verbose=True ):
 
 
 
-def countPosBodyExpression(species, bodyPart, vistaData, verbose=True ):
+def countPosBodyExpression(species, bodyPart, vistaData, verbose=True):
     positiveClass =0
     for trial in vistaData:        
         if trial['species'] == species and trial["expression"] and bodyPart in trial['results']:
