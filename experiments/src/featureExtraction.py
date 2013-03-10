@@ -2,12 +2,14 @@
 
 import kmers
 
-# Given a kMer determine the dimension it corresponds to the feature vector.
-def kmerToPos(min_k, seq):
+# Given a kMer determine the coordinate at which it corresponds to the feature vector.
+def kmerToPos1(min_k, seq):
+        
     n = len(seq)
     loc = 0
-    for i in xrange(min_k, n):
+    for i in xrange(min_k, n):        
         loc += pow(4,i)
+    
     for i in xrange(0,n):
         place = (n-1)-i
         if seq[place] == 'A':
@@ -18,7 +20,44 @@ def kmerToPos(min_k, seq):
             loc += pow(4,i) * 2
         else:
             loc += pow(4,i) * 3
+    
+    assert (loc < (4**n - 4**(min_k-1)))
     return loc
+
+
+def convertToBase(number, base):
+    '''
+    Input: 2 positive integers: number, base
+    Output: The number expressed in a base-system numbering.
+    '''
+    add = number % base
+    if number<=base:
+        return str(number)
+    else:
+        return str(convertToBase(number//base, base)) + str(add)
+
+
+def posTokMer(position):    
+    '''
+    Input: a non-negative integer 'position':
+    Output: the kMer that corresponds to the 'position' coordinate of the feature vector.
+    '''    
+    assert (position >= 0)
+    
+    mapping = "ATGC"
+    kMer = []
+    pos  = 1
+        
+    while True:                  
+        modulo = position % 4
+        print modulo
+        kMer.append(mapping[modulo])
+        
+        position = position // 4
+        if position == 0: break
+    return kMer
+
+
 
 # writes to outfile a series of feature vectors prepared for libsvm
 # based on the species and bodypart
