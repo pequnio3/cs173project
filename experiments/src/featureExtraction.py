@@ -3,7 +3,7 @@
 import kmers
 
 # Given a kMer determine the coordinate at which it corresponds to the feature vector.
-def kmerToPos1(min_k, seq):
+def kmerToPos(min_k, seq):
         
     n = len(seq)
     loc = 0
@@ -20,10 +20,7 @@ def kmerToPos1(min_k, seq):
             loc += pow(4,i) * 2
         else:
             loc += pow(4,i) * 3
-    
-    assert (loc < (4**n - 4**(min_k-1)))
     return loc
-
 
 def convertToBase(number, base):
     '''
@@ -37,26 +34,35 @@ def convertToBase(number, base):
         return str(convertToBase(number//base, base)) + str(add)
 
 
-def posTokMer(position):    
+def posTokMer(min_k,position):    
     '''
     Input: a non-negative integer 'position':
     Output: the kMer that corresponds to the 'position' coordinate of the feature vector.
     '''    
     assert (position >= 0)
-    
-    mapping = "ATGC"
-    kMer = []
-    pos  = 1
-        
-    while True:                  
-        modulo = position % 4
-        print modulo
-        kMer.append(mapping[modulo])
-        
-        position = position // 4
-        if position == 0: break
-    return kMer
 
+    n = min_k
+    # loc is the botom of the range given n being the kmer at  pos's length
+    loc =0 
+    # while loc + its range  doesnt emcompass the position
+    while loc + pow(4,n)-1 < position:
+        loc += pow(4,n)
+        n+=1
+    bases="ATGC"
+    rel_pos = position- loc
+    k=rel_pos
+
+
+    kmer="A"*n
+    if k ==0:
+        return kmer
+    i=n-1
+    while i>=0:
+        rem =int(k)%4
+        kmer=kmer[0:i]+bases[rem]+kmer[i+1:]
+        k=k/float(4)
+        i-=1
+    return kmer
 
 
 # writes to outfile a series of feature vectors prepared for libsvm
