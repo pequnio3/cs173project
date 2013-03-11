@@ -3,7 +3,7 @@
 import kmers
 
 # Given a kMer determine the coordinate at which it corresponds to the feature vector.
-def kmerToPos1(min_k, seq):
+def kmerToPos(min_k, seq):
         
     n = len(seq)
     loc = 0

@@ -1,19 +1,5 @@
 #!/usr/bin/python
 
-def computeReverseCompliment(s):
-    rc_s = s
-    rc_s = rc_s.replace("A","1")
-    rc_s = rc_s.replace("T","A")
-    rc_s = rc_s.replace("1","T")
-    rc_s = rc_s.replace("G","1")
-    rc_s = rc_s.replace("C","G")
-    rc_s = rc_s.replace("G","T")
-    rc_s = rc_s[::-1]
-    return rc_s
-
-#computeReverseCompliment("AATTGGCCAAGGCCAA")
-#Out[1]: 'TTTT11TTTT11AATT'
-
 def reverseComplement(inputStrand):
     reverseStrand = ""
     
