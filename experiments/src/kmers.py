@@ -1,19 +1,5 @@
 #!/usr/bin/python
 
-def computeReverseCompliment(s):
-    rc_s = s
-    rc_s = rc_s.replace("A","1")
-    rc_s = rc_s.replace("T","A")
-    rc_s = rc_s.replace("1","T")
-    rc_s = rc_s.replace("G","1")
-    rc_s = rc_s.replace("C","G")
-    rc_s = rc_s.replace("G","T")
-    rc_s = rc_s[::-1]
-    return rc_s
-
-#computeReverseCompliment("AATTGGCCAAGGCCAA")
-#Out[1]: 'TTTT11TTTT11AATT'
-
 def reverseComplement(inputStrand):
     reverseStrand = ""
     
@@ -26,12 +12,12 @@ def reverseComplement(inputStrand):
 
 def computeKmerCounts(s,k):
     kmer_counts ={}
-    rc_s = computeReverseCompliment(s)
+    rc_s = reverseComplement(s)
     parts = [s]
     if rc_s != s:
         parts.append(rc_s)
         
-    for part in parts:
+    for part in parts:    #We expect two parts, the 5-3 and 3-5 reading of the input sequence -s-.
         for i in xrange(0,len(part)+1-k):
             kmer = s[i:i+k]
             if kmer in kmer_counts:

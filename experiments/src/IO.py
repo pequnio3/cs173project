@@ -98,5 +98,5 @@ def extractVistaData(vistaInFile, vistaOutFile=None, save=True):
 
 if __name__ == '__main__':
     vistaInFile = "../data/vista_db.txt"
-    vistaOutFile = "../data/vista_data.data"
+    vistaOutFile = "../data/vista_db.data"
     trials = extractVistaData(vistaInFile, vistaOutFile)
