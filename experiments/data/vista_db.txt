@@ -22665,13 +22665,11 @@ aaaatcaatctctctgtatggtctccaggctctgagtgaTTCCAGAGACAGCACAGTGGT
 A
 A
 cg
-n
 gT
 ac
 g
 g
 t
-n
 c
 c
 A
@@ -58167,12 +58165,10 @@ ataatcgactcctgtcctttgttttactctttaacctagtaataaatccctttaaaggcc
 cgtggtattcggagcatcccgtgtGTGAAGTGCTCTCGCAGTTGtgG
 A
 cg
-n
 gT
 ac
 g
 t
-n
 c
 g
 c

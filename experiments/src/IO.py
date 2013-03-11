@@ -1,6 +1,13 @@
 #!/usr/bin/python
-import re
-import cPickle
+import re, cPickle, sys
+
+def isValidDNASequence (sequence):
+    for i, s in enumerate(sequence):
+        if s not in ["A", "T", "C", "G"]: 
+            print s, i
+            return False
+    return True
+
 
 # generates a list of dictionary objects
 # objects look like this
@@ -58,8 +65,13 @@ def vistaDataParser(vista_filename):
 
         elif re.match("^\s*$",line) is not None:
             # endline
-            if cur_trial.has_key("element"):
+            if cur_trial.has_key("element"):                
                 cur_trial["sequence"]=cur_seq.upper()
+                if not isValidDNASequence (cur_trial["sequence"]):
+                    print cur_trial["element"]
+                    print cur_trial["sequence"]                    
+                    sys.exit("Not valid DNA Sequence.")              
+                                    
                 trials.append(cur_trial)
         else:
             # sequence line
@@ -68,8 +80,6 @@ def vistaDataParser(vista_filename):
         cur_trial["sequence"]=cur_seq.upper()
         trials.append(cur_trial)
     return trials
-
-
 
 
 

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import kmers
+import kmers, IO
 
 # Given a kMer determine the coordinate at which it corresponds to the feature vector.
 # ------
@@ -30,8 +30,7 @@ def kmerToPos(min_k, seq):
             loc += pow(4,i) * 2
         else:
             loc += pow(4,i) * 3
-    
-    
+        
     assert (loc < (4**n + maxLoc))
     return loc
 
@@ -127,7 +126,7 @@ def extractFeatures(vd, species, body_part, outfile, directions = "onlyStrictNeg
 
 
 
-# Positive = 1, Negative = 0, Garbage = "skip"
+# Positive = 1, Negative = 0, Not useful = "skip"
 def classifyTrial(trial, body_part, directions = "onlyStrictNegatives"):
     isPos   = trial["expression"]
     results = trial["results"]
