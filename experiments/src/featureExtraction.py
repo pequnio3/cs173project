@@ -3,12 +3,22 @@
 import kmers
 
 # Given a kMer determine the coordinate at which it corresponds to the feature vector.
+# ------
+# In particular, we assume that there is a minimum length of k-mers that were searched over the DNA sequence. 
+# So if len(seq) = n, we keep coordinates for all the k-mers with length between min_k and n.
+# Thus the implied feature vectors have dimensions = 4^min_k + ... + 4^n-1 + 4^n-2 + 4^n.
+# ------
+
 def kmerToPos(min_k, seq):
         
     n = len(seq)
-    loc = 0
+    loc =  0
+    
+    
     for i in xrange(min_k, n):        
         loc += pow(4,i)
+    
+    maxLoc = loc  #used for assertion reasons
     
     for i in xrange(0,n):
         place = (n-1)-i
@@ -21,7 +31,8 @@ def kmerToPos(min_k, seq):
         else:
             loc += pow(4,i) * 3
     
-    assert (loc < (4**n - 4**(min_k-1)))
+    
+    assert (loc < (4**n + maxLoc))
     return loc
 
 
@@ -143,7 +154,7 @@ def classifyTrial(trial, body_part, directions = "onlyStrictNegatives"):
 if __name__ == '__main__':
     import os, sys, cPickle, simpleStatistics
 
-    vd = cPickle.load( open("../data/vista_data.data","r") )
+    vd = cPickle.load( open("../data/vista_db.data","r") )
     
     species     = ["Human","Mouse"]
     body_parts  = ["limb", "neural_tube", "cranial_nerve", "hindbrain", "midbrain", "forebrain", "heart", "any"]

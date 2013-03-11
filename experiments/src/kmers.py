@@ -12,12 +12,12 @@ def reverseComplement(inputStrand):
 
 def computeKmerCounts(s,k):
     kmer_counts ={}
-    rc_s = computeReverseCompliment(s)
+    rc_s = reverseComplement(s)
     parts = [s]
     if rc_s != s:
         parts.append(rc_s)
         
-    for part in parts:
+    for part in parts:    #We expect two parts, the 5-3 and 3-5 reading of the input sequence -s-.
         for i in xrange(0,len(part)+1-k):
             kmer = s[i:i+k]
             if kmer in kmer_counts:
