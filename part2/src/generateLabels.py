@@ -5,7 +5,7 @@ import cPickle
 def classifyTrial(trial, body_part):
     isPos   = trial["expression"]
     results = trial["results"]
-    brain=["midbrain (mesencephalon)","hindbrain (rhombencephalon)","forebrain","cranial nerve","nerual tube"]
+    brain=["midbrain","hindbrain","forebrain","cranial nerve","nerual tube"]
     limb=["limb"]
     heart=["heart"]
 
@@ -15,8 +15,28 @@ def classifyTrial(trial, body_part):
         body_parts = brain
     elif body_part == "limb":
         body_parts=limb
+
+    elif body_part == "midbrain":
+        body_parts=["midbrain"]
+
+    elif body_part == "hindbrain":
+        body_parts=["hindbrain"]
+
+    elif body_part == "forebrain":
+        body_parts=["forebrain"]
+
+    elif body_part == "cranial_nerve":
+        body_parts=["cranial_nerve"]
+
+    elif body_part == "neural_tube":
+        body_parts=["neural_tube"]
+
+    elif body_part == "limb":
+        body_parts=limb
+
     elif body_part=="heart":
         body_parts=heart
+
     elif body_part == "any":
         body_parts=["any"]
     

@@ -7,8 +7,11 @@ else
     
     data_dir=$1
     vista_pickle=$2
-    body_part=$3
+
+    body_part=`echo $3 | sed "s/ /_/"`
     features_dir=$4
+    echo $body_part
+
 
     # generate a 
     features=`ls $features_dir`
@@ -16,7 +19,7 @@ else
     bp_dir=$data_dir/$body_part
     echo $bp_dir
 
-    
+
     labels=$bp_dir/$body_part.labels
 
     out=$bp_dir/$body_part.fv
@@ -28,12 +31,13 @@ else
 
     python generateLabels.py $vista_pickle $body_part $out
 
-    count=0
+    let count=0
     for feature in $features
     do
-	paste -d ' '  $out <(cat $features_dir/$feature | awk 'BEGIN{count='$count'*5}{ printf("%i:%f %i:%f %i:%f %i:%f %i:%f\n",count,$2,count+1,$3,count+2,$4,count+3,$5,count+4,$6) }') > $out.temp
+	paste -d ' '  $out <(cat $features_dir/$feature | awk 'BEGIN{c='$count'*5}{ printf("%i:%f %i:%f %i:%f %i:%f %i:%f\n",c,$2,c+1,$3,c+2,$4,c+3,$5,c+4,$6) }') > $out.temp
 	mv $out.temp $out
-	count=$count+1
+	let count+=1
     done
-
+    sort -k 1,1 -n $out > $out.temp
+    mv $out.temp $out
 fi
